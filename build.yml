@@ -1,0 +1,36 @@
+name: Windows EXE Derlemesi
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: EXE oluştur
+        run: >
+          dotnet publish Metin2SureHatirlatici.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          --output publish
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+
+      - name: ZIP oluştur
+        shell: pwsh
+        run: Compress-Archive -Path publish\* -DestinationPath MarasalBossTakip-Windows-x64.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MarasalBossTakip-Windows-x64
+          path: MarasalBossTakip-Windows-x64.zip
