@@ -3,21 +3,25 @@ name: Windows EXE Derlemesi
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "master" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-dotnet@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: .NET 8 kurulumu
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '8.0.x'
 
       - name: EXE oluştur
         run: >
-          dotnet publish Metin2SureHatirlatici.csproj
+          dotnet publish MarasalBossTakip.csproj
           --configuration Release
           --runtime win-x64
           --self-contained true
@@ -28,9 +32,11 @@ jobs:
 
       - name: ZIP oluştur
         shell: pwsh
-        run: Compress-Archive -Path publish\* -DestinationPath MarasalBossTakip-Windows-x64.zip
+        run: |
+          Compress-Archive -Path publish\* -DestinationPath MarasalBossTakip-Windows-x64.zip
 
-      - uses: actions/upload-artifact@v4
+      - name: EXE ve ZIP yükle
+        uses: actions/upload-artifact@v4
         with:
           name: MarasalBossTakip-Windows-x64
           path: MarasalBossTakip-Windows-x64.zip
