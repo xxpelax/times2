@@ -183,10 +183,24 @@ public sealed class MainForm : Form
         Controls.Add(status);
     }
 
-  private Image? LoadArt()
+ private Image? LoadArt()
 {
-    string path = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "marasal_background.jpg");
-    return System.IO.File.Exists(path) ? Image.FromFile(path) : null;
+    string path = System.IO.Path.Combine(
+        AppContext.BaseDirectory,
+        "Assets",
+        "marasal_background.jpg"
+    );
+
+    if (!System.IO.File.Exists(path))
+        return null;
+
+    using var stream = new System.IO.FileStream(
+        path,
+        System.IO.FileMode.Open,
+        System.IO.FileAccess.Read
+    );
+
+    return Image.FromStream(stream);
 }
     }
 
