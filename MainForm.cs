@@ -184,10 +184,17 @@ public sealed class MainForm : Form
     }
 
     private Image? LoadArt()
-    {
-        string path = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "marasal_background.jpg");
-        return System.IO.File.Exists(path) ? Image.FromFile(path) : null;
-    }
+{
+    string path = System.IO.Path.Combine(
+        AppContext.BaseDirectory,
+        "Assets",
+        "marasal_background.jpg"
+    );
+
+    return System.IO.File.Exists(path)
+        ? Image.FromFile(path)
+        : null;
+}
 
     private static Panel MakePanel(Point location, Size size)
     {
