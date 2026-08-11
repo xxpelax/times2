@@ -183,7 +183,7 @@ public sealed class MainForm : Form
         Controls.Add(status);
     }
 
-    private Image? LoadArt()
+   private Image? LoadArt()
 {
     string path = System.IO.Path.Combine(
         AppContext.BaseDirectory,
@@ -191,11 +191,20 @@ public sealed class MainForm : Form
         "marasal_background.jpg"
     );
 
-    return System.IO.File.Exists(path)
-        ? Image.FromFile(path)
-        : null;
-}
+    if (!System.IO.File.Exists(path))
+    {
+        MessageBox.Show(
+            "MARAŞAL arka plan görseli bulunamadı:\n\n" + path,
+            "Görsel Hatası",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Warning
+        );
 
+        return null;
+    }
+
+    return Image.FromFile(path);
+}
     private static Panel MakePanel(Point location, Size size)
     {
         return new Panel {
