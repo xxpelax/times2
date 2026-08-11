@@ -183,24 +183,11 @@ public sealed class MainForm : Form
         Controls.Add(status);
     }
 
-   private Image? LoadArt()
+  private Image? LoadArt()
 {
-    string path = System.IO.Path.Combine(
-        AppContext.BaseDirectory,
-        "Assets",
-        "marasal_background.jpg"
-    );
-
-    if (!System.IO.File.Exists(path))
-    {
-        MessageBox.Show(
-            "MARAŞAL arka plan görseli bulunamadı:\n\n" + path,
-            "Görsel Hatası",
-            MessageBoxButtons.OK,
-            MessageBoxIcon.Warning
-        );
-
-        return null;
+    string path = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "marasal_background.jpg");
+    return System.IO.File.Exists(path) ? Image.FromFile(path) : null;
+}
     }
 
     return Image.FromFile(path);
